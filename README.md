@@ -26,3 +26,4 @@ This repository is ideal for developers, administrators, and IT professionals lo
 ```bash
 docker compose up
 ```
+4. Go to http://localhost:8080, use the credentials of .env file (default user: admin, pass: admin)
