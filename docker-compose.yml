@@ -1,5 +1,4 @@
 services:
-
   # Keycloak container
   keycloak:
     image: quay.io/keycloak/keycloak:26.0
@@ -10,13 +9,13 @@ services:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres/${KEYCLOAK_DB}
       KC_DB_USERNAME: ${KEYCLOAK_DB_USER}
-      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}      
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
     ports:
-      - 8080:8080
+      - ${KEYCLOAK_PORT}:8080
     depends_on:
       - postgres
-      - mailpit  
-      - httpbin    
+      - mailpit
+      - httpbin
 
   # Database to store Keycloak data
   postgres:
@@ -28,7 +27,7 @@ services:
       POSTGRES_USER: ${KEYCLOAK_DB_USER}
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
     ports:
-      - 3254:5432  
+      - ${POSTGRES_PORT}:5432
 
   # SMTP service simulator
   mailpit:
@@ -36,16 +35,16 @@ services:
     volumes:
       - ./data/mailpit:/data
     ports:
-      - 1025:1025    
-      - 8025:8025
+      - ${MAILPIT_PORT_SMTP}:1025
+      - ${MAILPIT_PORT_CONSOLE}:8025
     environment:
       MP_MAX_MESSAGES: 5000
       MP_DATABASE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1            
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
   # Test HTTP Request & Response Service
   httpbin:
     image: kennethreitz/httpbin
     ports:
-      - 9080:80      
+      - ${HTTPBIN_PORT}:80
